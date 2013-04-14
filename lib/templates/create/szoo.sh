@@ -50,3 +50,43 @@ function szoo.install() {
     fi
   done
 }
+
+# Download some files and extract them
+function szoo.get() {
+  szoo.download ${@}
+  set -- "${@:2}"
+  szoo.extract ${@}
+}
+
+# Download a file
+function szoo.download() {
+  mirror=$1
+  name=$2
+  type=$3
+  file="${name}.${type}"
+  if [ ! -f "${file}" ]; then
+    echo "Downloading ${file}"
+    curl -s -C - -O "${mirror}/${file}"
+
+    if [ ! -f "${file}" ]; then
+      echo "Could not download ${file}"
+      exit 1
+    fi
+  fi
+}
+
+# Extract a file
+function szoo.extract() {
+  name=$1
+  type=$2
+  file="${name}.${type}"
+  if [ ! -d "${name}" ]; then
+    echo "Extracting ${file}"
+    tar -xf "${file}"
+
+    if [ ! -d "${name}" ]; then
+      echo "Could not extract ${name}"
+      exit 1
+    fi
+  fi
+}
