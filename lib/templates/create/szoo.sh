@@ -1,23 +1,23 @@
-# This file is used to define functions under the sunzi.* namespace.
+# This file is used to define functions under the szoo.* namespace.
 
-# Set $sunzi_pkg to "apt-get" or "yum", or abort.
+# Set $szoo_pkg to "apt-get" or "yum", or abort.
 #
 if which apt-get >/dev/null 2>&1; then
-  export sunzi_pkg=apt-get
+  export szoo_pkg=apt-get
 elif which yum >/dev/null 2>&1; then
-  export sunzi_pkg=yum
+  export szoo_pkg=yum
 elif which brew >/dev/null 2>&1; then
-  export sunzi_pkg=brew
+  export szoo_pkg=brew
 fi
 
-if [ "$sunzi_pkg" = '' ]; then
-  echo 'sunzi only supports apt-get, yum and brew!' >&2
+if [ "$szoo_pkg" = '' ]; then
+  echo 'szoo only supports apt-get, yum and brew!' >&2
   exit 1
 fi
 
 # Mute STDOUT and STDERR
 #
-function sunzi.mute() {
+function szoo.mute() {
   echo "Running \"$@\""
   `$@ >/dev/null 2>&1`
   return $?
@@ -25,27 +25,27 @@ function sunzi.mute() {
 
 # Installer
 #
-function sunzi.installed() {
-  if [ "$sunzi_pkg" = 'apt-get' ]; then
+function szoo.installed() {
+  if [ "$szoo_pkg" = 'apt-get' ]; then
     dpkg -s $@ >/dev/null 2>&1
-  elif [ "$sunzi_pkg" = 'yum' ]; then
+  elif [ "$szoo_pkg" = 'yum' ]; then
     rpm -qa | grep $@ >/dev/null
   fi
   return $?
 }
 
-# When there's "set -e" in install.sh, sunzi.install should be used with if statement,
+# When there's "set -e" in install.sh, szoo.install should be used with if statement,
 # otherwise the script may exit unexpectedly when the package is already installed.
 #
-function sunzi.install() {
+function szoo.install() {
   for name in $@
   do
-    if sunzi.installed "$name"; then
+    if szoo.installed "$name"; then
       echo "$name already installed"
       return 1
     else
       echo "No packages found matching $name. Installing..."
-      sunzi.mute "$sunzi_pkg -y install $name"
+      szoo.mute "$szoo_pkg -y install $name"
       return 0
     fi
   done

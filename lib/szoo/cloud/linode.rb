@@ -1,6 +1,6 @@
-Sunzi::Dependency.load('linode')
+SZoo::Dependency.load('linode')
 
-module Sunzi
+module SZoo
   class Cloud
     class Linode < Base
       def do_setup

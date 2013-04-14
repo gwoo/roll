@@ -1,7 +1,7 @@
-module Sunzi
+module SZoo
   class DNS
     class Base
-      include Sunzi::Utility
+      include SZoo::Utility
     end
   end
 end

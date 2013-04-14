@@ -1,12 +1,12 @@
 # coding: utf-8
 
 Gem::Specification.new do |spec|
-  spec.name          = 'sunzi'
-  spec.version       = '1.2.0' # retrieve this value by: Gem.loaded_specs['sunzi'].version.to_s
-  spec.authors       = ['Kenn Ejima']
-  spec.email         = ['kenn.ejima@gmail.com']
-  spec.homepage      = 'http://github.com/kenn/sunzi'
-  spec.summary       = %q{Server provisioning utility for minimalists}
+  spec.name          = 'szoo'
+  spec.version       = '1.2.0' # retrieve this value by: Gem.loaded_specs['szoo'].version.to_s
+  spec.authors       = ['Kenn Ejima', 'GWoo']
+  spec.email         = ['kenn.ejima@gmail.com', 'gwoohoo@gmail.com']
+  spec.homepage      = 'http://github.com/gwoo/szoo'
+  spec.summary       = %q{A fork of sunzi}
   spec.description   = %q{Server provisioning utility for minimalists}
   spec.license       = 'MIT'
 

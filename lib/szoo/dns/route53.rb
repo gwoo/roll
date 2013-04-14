@@ -1,6 +1,6 @@
-Sunzi::Dependency.load('route53')
+SZoo::Dependency.load('route53')
 
-module Sunzi
+module SZoo
   class DNS
     class Route53 < Base
       def initialize(config, cloud)

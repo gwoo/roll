@@ -1,6 +1,6 @@
-Sunzi::Dependency.load('linode')
+SZoo::Dependency.load('linode')
 
-module Sunzi
+module SZoo
   class DNS
     class Linode < Base
       def initialize(config, cloud)

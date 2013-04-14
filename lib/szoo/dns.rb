@@ -1,12 +1,12 @@
-module Sunzi
+module SZoo
   class DNS
     def initialize(config, cloud)
       dns = config['dns']
       @subject = case dns
       when 'linode'
-        Sunzi::DNS::Linode.new(config, cloud)
+        SZoo::DNS::Linode.new(config, cloud)
       when 'route53'
-        Sunzi::DNS::Route53.new(config, cloud)
+        SZoo::DNS::Route53.new(config, cloud)
       else
         abort_with "DNS #{dns} is not valid!"
       end

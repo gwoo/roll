@@ -1,11 +1,11 @@
-module Sunzi
+module SZoo
   class Cloud
     def initialize(cli, provider)
       @subject = case provider
       when 'linode'
-        Sunzi::Cloud::Linode.new(cli, provider)
+        SZoo::Cloud::Linode.new(cli, provider)
       when 'digital_ocean'
-        Sunzi::Cloud::DigitalOcean.new(cli, provider)
+        SZoo::Cloud::DigitalOcean.new(cli, provider)
       else
         abort_with "#{provider} is not valid!"
       end

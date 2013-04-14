@@ -1,43 +1,43 @@
 require 'open3'
 require 'ostruct'
 
-module Sunzi
+module SZoo
   class Cli < Thor
     include Thor::Actions
 
-    desc 'create', 'Create sunzi project'
-    def create(project = 'sunzi')
+    desc 'create', 'Create szoo project'
+    def create(project = 'szoo')
       do_create(project)
     end
 
-    desc 'deploy [user@host:port] [role] [--sudo]', 'Deploy sunzi project'
+    desc 'deploy [user@host:port] [role] [--sudo]', 'Deploy szoo project'
     method_options :sudo => false
     def deploy(target, role = nil)
       do_deploy(target, role, options.sudo?)
     end
 
-    desc 'compile', 'Compile sunzi project'
+    desc 'compile', 'Compile szoo project'
     def compile(role = nil)
       do_compile(role)
     end
 
     desc 'setup [linode|digital_ocean]', 'Setup a new VM'
     def setup(provider)
-      Sunzi::Cloud.new(self, provider).setup
+      SZoo::Cloud.new(self, provider).setup
     end
 
     desc 'teardown [linode|digital_ocean] [name]', 'Teardown an existing VM'
     def teardown(provider, name)
-      Sunzi::Cloud.new(self, provider).teardown(name)
+      SZoo::Cloud.new(self, provider).teardown(name)
     end
 
     desc 'version', 'Show version'
     def version
-      puts Gem.loaded_specs['sunzi'].version.to_s
+      puts Gem.loaded_specs['szoo'].version.to_s
     end
 
     no_tasks do
-      include Sunzi::Utility
+      include SZoo::Utility
 
       def self.source_root
         File.expand_path('../../',__FILE__)
@@ -45,9 +45,9 @@ module Sunzi
 
       def do_create(project)
         copy_file 'templates/create/.gitignore',         "#{project}/.gitignore"
-        copy_file 'templates/create/sunzi.yml',          "#{project}/sunzi.yml"
+        copy_file 'templates/create/szoo.yml',          "#{project}/szoo.yml"
         copy_file 'templates/create/install.sh',         "#{project}/install.sh"
-        copy_file 'templates/create/recipes/sunzi.sh',   "#{project}/recipes/sunzi.sh"
+        copy_file 'templates/create/recipes/szoo.sh',   "#{project}/recipes/szoo.sh"
         copy_file 'templates/create/roles/db.sh',        "#{project}/roles/db.sh"
         copy_file 'templates/create/roles/web.sh',       "#{project}/roles/web.sh"
         copy_file 'templates/create/files/.gitkeep',     "#{project}/files/.gitkeep"
@@ -66,14 +66,14 @@ module Sunzi
         `ssh-keygen -R #{host} 2> /dev/null`
 
         remote_commands = <<-EOS
-        rm -rf ~/sunzi &&
-        mkdir ~/sunzi &&
-        cd ~/sunzi &&
+        rm -rf ~/szoo &&
+        mkdir ~/szoo &&
+        cd ~/szoo &&
         tar xz &&
         #{sudo}bash install.sh
         EOS
 
-        remote_commands.strip! << ' && rm -rf ~/sunzi' if @config['preferences'] and @config['preferences']['erase_remote_folder']
+        remote_commands.strip! << ' && rm -rf ~/szoo' if @config['preferences'] and @config['preferences']['erase_remote_folder']
 
         local_commands = <<-EOS
         cd compiled
@@ -95,13 +95,13 @@ module Sunzi
       end
 
       def do_compile(role)
-        # Check if you're in the sunzi directory
-        abort_with 'You must be in the sunzi folder' unless File.exists?('sunzi.yml')
+        # Check if you're in the szoo directory
+        abort_with 'You must be in the szoo folder' unless File.exists?('szoo.yml')
         # Check if role exists
         abort_with "#{role} doesn't exist!" if role and !File.exists?("roles/#{role}.sh")
 
-        # Load sunzi.yml
-        @config = YAML.load(File.read('sunzi.yml'))
+        # Load szoo.yml
+        @config = YAML.load(File.read('szoo.yml'))
 
         # Break down attributes into individual files
         (@config['attributes'] || {}).each {|key, value| create_file "compiled/attributes/#{key}", value }

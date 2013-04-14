@@ -1,6 +1,6 @@
-Sunzi::Dependency.load('digital_ocean')
+SZoo::Dependency.load('digital_ocean')
 
-module Sunzi
+module SZoo
   class Cloud
     class DigitalOcean < Base
       def do_setup

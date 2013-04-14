@@ -1,9 +1,9 @@
-require 'sunzi'
+require 'szoo'
 require 'test/unit'
 
 class TestCli < Test::Unit::TestCase
   def setup
-    @cli = Sunzi::Cli.new
+    @cli = SZoo::Cli.new
   end
 
   def test_parse_target
@@ -16,7 +16,7 @@ class TestCli < Test::Unit::TestCase
 
   def test_create
     @cli.create 'sandbox'
-    assert File.exist?('sandbox/sunzi.yml')
+    assert File.exist?('sandbox/szoo.yml')
     FileUtils.rm_rf 'sandbox'
   end
 end

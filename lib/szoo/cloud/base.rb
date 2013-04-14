@@ -1,9 +1,9 @@
-Sunzi::Dependency.load('highline')
+SZoo::Dependency.load('highline')
 
-module Sunzi
+module SZoo
   class Cloud
     class Base
-      include Sunzi::Utility
+      include SZoo::Utility
 
       def initialize(cli, provider)
         @provider = provider
@@ -19,7 +19,7 @@ module Sunzi
         end
 
         @config = YAML.load(File.read("#{@provider}/#{@provider}.yml"))
-        @dns = Sunzi::DNS.new(@config, @provider) if @config['dns']
+        @dns = SZoo::DNS.new(@config, @provider) if @config['dns']
 
         if @config['fqdn']['zone'] == 'example.com'
           abort_with "You must have your own settings in #{@provider}.yml"
@@ -50,7 +50,7 @@ module Sunzi
         end
 
         @config = YAML.load(File.read("#{@provider}/#{@provider}.yml"))
-        @dns = Sunzi::DNS.new(@config, @provider) if @config['dns']
+        @dns = SZoo::DNS.new(@config, @provider) if @config['dns']
 
         @instance = YAML.load(File.read("#{@provider}/instances/#{name}.yml"))
 
