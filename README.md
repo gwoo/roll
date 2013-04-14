@@ -13,7 +13,7 @@ Its design goals are:
 
 * **It's just shell script.** No clunky Ruby DSL involved. Most of the information about server configuration on the web is written in shell commands. Just copy-paste them, rather than translate it into an arbitrary DSL. Also, Bash is the greatest common denominator on minimum Linux installs.
 * **Focus on diff from default.** No big-bang overwriting. Append or replace the smallest possible piece of data in a config file. Loads of custom configurations make it difficult to understand what you are really doing.
-* **Always use the root user.** Think twice before blindly assuming you need a regular user - it doesn't add any security benefit for server provisioning, it just adds extra verbosity for nothing. However, it doesn't mean that you shouldn't create regular users with SZoo - feel free to write your own recipes.
+* **Always use the root user.** Think twice before blindly assuming you need a regular user - it doesn't add any security benefit for server provisioning, it just adds extra verbosity for nothing. However, it doesn't mean that you shouldn't create regular users with SZoo - feel free to write your own scripts.
 * **Minimum dependencies.** No configuration server required. You don't even need a Ruby runtime on the remote server.
 
 ### What's new:
@@ -23,7 +23,7 @@ Its design goals are:
 * v1.0: System functions are refactored into szoo.mute() and szoo.install().
 * v0.9: Support for [DigitalOcean](https://www.digitalocean.com) setup / teardown.
 * v0.8: Added `--sudo` option to `szoo deploy`.
-* v0.7: Added `erase_remote_folder` and `cache_remote_recipes` preferences for customized behavior.
+* v0.7: Added `erase_remote_folder` and `cache_remote_scripts` preferences for customized behavior.
 * v0.6: System function szoo::silencer() added for succinct log messages.
 * v0.5: Role-based configuration supported. Reworked directory structure. **Incompatible with previous versions**.
 
@@ -53,14 +53,14 @@ $ szoo deploy example.com
 
 Now, what it actually does is:
 
-1. Compile `szoo.yml` to generate attributes and retrieve remote recipes, then copy files into the `compiled` directory
+1. Compile `szoo.yml` to generate attributes and retrieve remote scripts, then copy files into the `compiled` directory
 1. SSH to `example.com` and login as `root`
 1. Transfer the content of the `compiled` directory to the remote server and extract in `$HOME/szoo`
 1. Run `install.sh` on the remote server
 
 As you can see, all you need to do is edit `install.sh` and add some shell commands. That's it.
 
-A SZoo project without any recipes or roles is totally fine, so that you can start small, go big as you get along.
+A SZoo project without any scripts or roles is totally fine, so that you can start small, go big as you get along.
 
 Commands
 --------
@@ -83,9 +83,9 @@ Here's the directory structure that `szoo create` automatically generates:
 ```bash
 szoo/
   install.sh      # main script
-  szoo.yml       # add custom attributes and remote recipes here
+  szoo.yml       # add custom attributes and remote scripts here
 
-  recipes/        # put commonly used scripts here, referred from install.sh
+  scripts/        # put commonly used scripts here, referred from install.sh
     szoo.sh
   roles/          # when role is specified, scripts here will be concatenated
     db.sh         # to install.sh in the compile phase
@@ -124,21 +124,21 @@ Now, you get the following result.
 Goodbye Chef, Hello SZoo!
 ```
 
-Remote Recipes
+Remote Scripts
 --------------
 
-Recipes can be retrieved remotely via HTTP. Put a URL in the recipes section of `szoo.yml`, and SZoo will automatically load the content and put it into the `compiled/recipes` folder in the compile phase.
+Scripts can be retrieved remotely via HTTP. Put a URL in the scripts section of `szoo.yml`, and SZoo will automatically load the content and put it into the `compiled/scripts` folder in the compile phase.
 
 For instance, if you have the following line in `szoo.yml`,
 
 ```yaml
-recipes:
-  rvm: https://raw.github.com/kenn/szoo-recipes/master/ruby/rvm.sh
+scripts:
+  rvm: https://raw.github.com/kenn/szoo-scripts/master/ruby/rvm.sh
 ```
 
-`rvm.sh` will be available and you can refer to that recipe by `source recipes/rvm.sh`.
+`rvm.sh` will be available and you can refer to that recipe by `source scripts/rvm.sh`.
 
-You may find sample recipes in this repository useful: https://github.com/kenn/szoo-recipes
+You may find sample scripts in this repository useful: https://github.com/kenn/szoo-scripts
 
 Role-based configuration
 ------------------------

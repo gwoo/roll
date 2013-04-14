@@ -4,11 +4,11 @@ attributes:
   environment: production
   ruby_version: 2.0.0
 
-# Remote recipes here will be downloaded to compiled/recipes.
-recipes:
-  rvm: https://raw.github.com/kenn/szoo-recipes/master/ruby/rvm.sh
-  # dotdeb: https://raw.github.com/kenn/szoo-recipes/master/debian/dotdeb.sh
-  # mongodb-10gen: https://raw.github.com/kenn/szoo-recipes/master/debian/mongodb-10gen.sh
+# Remote scripts here will be downloaded to compiled/scripts.
+scripts:
+  rvm: https://raw.github.com/kenn/szoo-scripts/master/ruby/rvm.sh
+  # dotdeb: https://raw.github.com/kenn/szoo-scripts/master/debian/dotdeb.sh
+  # mongodb-10gen: https://raw.github.com/kenn/szoo-scripts/master/debian/mongodb-10gen.sh
 
 # Files specified here will be copied to compiled/files.
 # files:
@@ -20,10 +20,10 @@ preferences:
   # Turn on when you are done with testing and ready for production use.
   erase_remote_folder: false
 
-  # Skip retrieving remote recipes when local copies already exist. This setting helps
-  # iterative deploy testing considerably faster, when you have a lot of remote recipes.
-  cache_remote_recipes: false
+  # Skip retrieving remote scripts when local copies already exist. This setting helps
+  # iterative deploy testing considerably faster, when you have a lot of remote scripts.
+  cache_remote_scripts: false
 
   # Evaluate files as ERB templates. When enabled, you can pass dynamic values in the form
-  # of <%= @attributes.environment %> in recipes, roles, files and install.sh.
+  # of <%= @attributes.environment %> in scripts, roles, files and install.sh.
   eval_erb: true

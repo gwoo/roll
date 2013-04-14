@@ -45,9 +45,10 @@ module SZoo
 
       def do_create(project)
         copy_file 'templates/create/.gitignore',         "#{project}/.gitignore"
-        copy_file 'templates/create/szoo.yml',          "#{project}/szoo.yml"
+        copy_file 'templates/create/szoo.yml',           "#{project}/szoo.yml"
         copy_file 'templates/create/install.sh',         "#{project}/install.sh"
-        copy_file 'templates/create/recipes/szoo.sh',   "#{project}/recipes/szoo.sh"
+        copy_file 'templates/create/szoo.sh',            "#{project}/szoo.sh"
+        copy_file 'templates/create/scripts/update.sh',  "#{project}/scripts/update.sh"
         copy_file 'templates/create/roles/db.sh',        "#{project}/roles/db.sh"
         copy_file 'templates/create/roles/web.sh',       "#{project}/roles/web.sh"
         copy_file 'templates/create/files/.gitkeep',     "#{project}/files/.gitkeep"
@@ -58,7 +59,7 @@ module SZoo
         user, host, port = parse_target(target)
         endpoint = "#{user}@#{host}"
 
-        # compile attributes and recipes
+        # compile attributes and scripts
         do_compile(role)
 
         # The host key might change when we instantiate a new VM, so
@@ -106,17 +107,17 @@ module SZoo
         # Break down attributes into individual files
         (@config['attributes'] || {}).each {|key, value| create_file "compiled/attributes/#{key}", value }
 
-        # Retrieve remote recipes via HTTP
-        cache_remote_recipes = @config['preferences'] && @config['preferences']['cache_remote_recipes']
-        (@config['recipes'] || []).each do |key, value|
-          next if cache_remote_recipes and File.exists?("compiled/recipes/#{key}.sh")
-          get value, "compiled/recipes/#{key}.sh"
+        # Retrieve remote scripts via HTTP
+        cache_remote_scripts = @config['preferences'] && @config['preferences']['cache_remote_scripts']
+        (@config['scripts'] || []).each do |key, value|
+          next if cache_remote_scripts and File.exists?("compiled/scripts/#{key}.sh")
+          get value, "compiled/scripts/#{key}.sh"
         end
 
         # Copy local files
         @attributes = OpenStruct.new(@config['attributes'])
         copy_or_template = (@config['preferences'] && @config['preferences']['eval_erb']) ? :template : :copy_file
-        Dir['recipes/*'].each {|file| send copy_or_template, File.expand_path(file), "compiled/recipes/#{File.basename(file)}" }
+        Dir['scripts/*'].each {|file| send copy_or_template, File.expand_path(file), "compiled/scripts/#{File.basename(file)}" }
         Dir['roles/*'].each   {|file| send copy_or_template, File.expand_path(file), "compiled/roles/#{File.basename(file)}" }
         Dir['files/*'].each   {|file| send copy_or_template, File.expand_path(file), "compiled/files/#{File.basename(file)}" }
         (@config['files'] || []).each {|file| send copy_or_template, File.expand_path(file), "compiled/files/#{File.basename(file)}" }
