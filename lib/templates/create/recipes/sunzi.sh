@@ -6,10 +6,12 @@ if which apt-get >/dev/null 2>&1; then
   export sunzi_pkg=apt-get
 elif which yum >/dev/null 2>&1; then
   export sunzi_pkg=yum
+elif which brew >/dev/null 2>&1; then
+  export sunzi_pkg=brew
 fi
 
 if [ "$sunzi_pkg" = '' ]; then
-  echo 'sunzi only supports apt-get or yum!' >&2
+  echo 'sunzi only supports apt-get, yum and brew!' >&2
   exit 1
 fi
 
