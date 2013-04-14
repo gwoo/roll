@@ -11,9 +11,6 @@ export DEBIAN_FRONTEND=noninteractive
 # Add Dotdeb repository. Recommended if you're using Debian. See http://www.dotdeb.org/about/
 # source recipes/dotdeb.sh
 
-# Update apt catalog and upgrade installed packages
-sunzi.mute "apt-get update"
-sunzi.mute "apt-get -y upgrade"
 
 # Install packages
 apt-get -y install git-core ntp curl
