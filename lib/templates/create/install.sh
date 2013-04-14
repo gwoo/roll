@@ -2,7 +2,10 @@
 set -e
 
 # Load base utility functions like szoo.mute() and szoo.install()
-source scripts/szoo.sh
+source szoo.sh
+
+# Load configuration
+source config.sh
 
 # This line is necessary for automated provisioning for Debian/Ubuntu.
 # Remove if you're not on Debian/Ubuntu.

@@ -48,6 +48,7 @@ module SZoo
         copy_file 'templates/create/szoo.yml',           "#{project}/szoo.yml"
         copy_file 'templates/create/install.sh',         "#{project}/install.sh"
         copy_file 'templates/create/szoo.sh',            "#{project}/szoo.sh"
+        copy_file 'templates/create/config.sh',          "#{project}/config.sh"
         copy_file 'templates/create/scripts/update.sh',  "#{project}/scripts/update.sh"
         copy_file 'templates/create/roles/db.sh',        "#{project}/roles/db.sh"
         copy_file 'templates/create/roles/web.sh',       "#{project}/roles/web.sh"
