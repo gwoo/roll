@@ -41,7 +41,7 @@ function szoo.install() {
   for name in $@
   do
     if szoo.installed "$name"; then
-      echo "$name already installed"
+      echo "$name installed"
       return 1
     else
       echo "No packages found matching $name. Installing..."
