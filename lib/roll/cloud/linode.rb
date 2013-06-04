@@ -1,6 +1,6 @@
-SZoo::Dependency.load('linode')
+Roll::Dependency.load('linode')
 
-module SZoo
+module Roll
   class Cloud
     class Linode < Base
       def do_setup

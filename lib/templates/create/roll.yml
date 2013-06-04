@@ -21,7 +21,7 @@ scripts:
 # files:
 #   - ~/.ssh/id_rsa.pub
 
-# Fine tune how SZoo should work.
+# Fine tune how Roll should work.
 preferences:
   # Erase the generated folder on the server after deploy.
   # Turn on when you are done with testing and ready for production use.

@@ -1,11 +1,11 @@
-module SZoo
+module Roll
   class Cloud
     def initialize(cli, provider)
       @subject = case provider
       when 'linode'
-        SZoo::Cloud::Linode.new(cli, provider)
+        Roll::Cloud::Linode.new(cli, provider)
       when 'digital_ocean'
-        SZoo::Cloud::DigitalOcean.new(cli, provider)
+        Roll::Cloud::DigitalOcean.new(cli, provider)
       else
         abort_with "#{provider} is not valid!"
       end

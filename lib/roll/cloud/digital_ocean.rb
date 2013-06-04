@@ -1,6 +1,6 @@
-SZoo::Dependency.load('digital_ocean')
+Roll::Dependency.load('digital_ocean')
 
-module SZoo
+module Roll
   class Cloud
     class DigitalOcean < Base
       def do_setup

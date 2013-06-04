@@ -1,7 +1,7 @@
-module SZoo
+module Roll
   class DNS
     class Base
-      include SZoo::Utility
+      include Roll::Utility
     end
   end
 end

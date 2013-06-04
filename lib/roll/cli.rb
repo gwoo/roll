@@ -1,16 +1,16 @@
 require 'open3'
 require 'ostruct'
 
-module SZoo
+module Roll
   class Cli < Thor
     include Thor::Actions
 
-    desc 'create', 'Create szoo project'
-    def create(project = 'szoo')
+    desc 'create', 'Create roll project'
+    def create(project = 'roll')
       do_create(project)
     end
 
-    desc 'deploy [--sudo] cluster|host|user@host:port [role]', 'Deploy szoo project on the host(s)'
+    desc 'deploy [--sudo] cluster|host|user@host:port [role]', 'Deploy roll project on the host(s)'
     method_options :sudo => false
     def deploy(target = nil, role = nil)
       do_deploy(target, role, options.sudo?)
@@ -23,28 +23,28 @@ module SZoo
       do_execute(target, script, options.sudo?)
     end
 
-    desc 'compile', 'Compile szoo project'
+    desc 'compile', 'Compile roll project'
     def compile(role = nil)
       do_compile(role)
     end
 
     desc 'setup [linode|digital_ocean]', 'Setup a new VM'
     def setup(provider)
-      SZoo::Cloud.new(self, provider).setup
+      Roll::Cloud.new(self, provider).setup
     end
 
     desc 'teardown [linode|digital_ocean] [name]', 'Teardown an existing VM'
     def teardown(provider, name)
-      SZoo::Cloud.new(self, provider).teardown(name)
+      Roll::Cloud.new(self, provider).teardown(name)
     end
 
     desc 'version', 'Show version'
     def version
-      puts Gem.loaded_specs['szoo'].version.to_s
+      puts Gem.loaded_specs['roll'].version.to_s
     end
 
     no_tasks do
-      include SZoo::Utility
+      include Roll::Utility
 
       def self.source_root
         File.expand_path('../../',__FILE__)
@@ -52,9 +52,9 @@ module SZoo
 
       def do_create(project)
         copy_file 'templates/create/.gitignore',         "#{project}/.gitignore"
-        copy_file 'templates/create/szoo.yml',           "#{project}/szoo.yml"
+        copy_file 'templates/create/roll.yml',           "#{project}/roll.yml"
         copy_file 'templates/create/install.sh',         "#{project}/install.sh"
-        copy_file 'templates/create/szoo.sh',            "#{project}/szoo.sh"
+        copy_file 'templates/create/roll.sh',            "#{project}/roll.sh"
         copy_file 'templates/create/config.sh',          "#{project}/config.sh"
         copy_file 'templates/create/scripts/update.sh',  "#{project}/scripts/update.sh"
         copy_file 'templates/create/roles/db.sh',        "#{project}/roles/db.sh"
@@ -72,14 +72,14 @@ module SZoo
           `ssh-keygen -R #{host} 2> /dev/null`
 
           remote_commands = <<-EOS
-          rm -rf ~/szoo &&
-          mkdir ~/szoo &&
-          cd ~/szoo &&
+          rm -rf ~/roll &&
+          mkdir ~/roll &&
+          cd ~/roll &&
           tar xz &&
           #{sudo}bash #{script}
           EOS
 
-          remote_commands.strip! << ' && rm -rf ~/szoo' if @config['preferences'] and @config['preferences']['erase_remote_folder']
+          remote_commands.strip! << ' && rm -rf ~/roll' if @config['preferences'] and @config['preferences']['erase_remote_folder']
 
           local_commands = <<-EOS
           cd compiled
@@ -132,7 +132,7 @@ module SZoo
         Dir['roles/*'].each   {|file| send copy_or_template, File.expand_path(file), "compiled/roles/#{File.basename(file)}" }
         Dir['files/*'].each   {|file| send copy_or_template, File.expand_path(file), "compiled/files/#{File.basename(file)}" }
         (@config['files'] || []).each {|file| send copy_or_template, File.expand_path(file), "compiled/files/#{File.basename(file)}" }
-        send copy_or_template, File.expand_path('szoo.sh'), 'compiled/szoo.sh'
+        send copy_or_template, File.expand_path('roll.sh'), 'compiled/roll.sh'
         send copy_or_template, File.expand_path('config.sh'), 'compiled/config.sh'
 
         # Build install.sh
@@ -149,11 +149,11 @@ module SZoo
       end
 
       def get_config()
-        # Check if you're in the szoo directory
-        abort_with 'You must be in the szoo folder' unless File.exists?('szoo.yml')
+        # Check if you're in the roll directory
+        abort_with 'You must be in the roll folder' unless File.exists?('roll.yml')
 
-        # Load szoo.yml
-        @config = YAML.load(File.read('szoo.yml'))
+        # Load roll.yml
+        @config = YAML.load(File.read('roll.yml'))
       end
 
       def hosts(input)

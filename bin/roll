@@ -4,5 +4,5 @@
 Signal.trap(:INT) { abort "\nAborting." }
 
 # Load the main lib and invoke CLI.
-require 'szoo'
-SZoo::Cli.start
+require 'roll'
+Roll::Cli.start

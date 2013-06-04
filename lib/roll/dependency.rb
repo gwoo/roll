@@ -1,4 +1,4 @@
-module SZoo
+module Roll
   class Dependency
     def self.all
       {

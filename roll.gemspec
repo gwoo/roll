@@ -1,11 +1,11 @@
 # coding: utf-8
 
 Gem::Specification.new do |spec|
-  spec.name          = 'szoo'
-  spec.version       = '1.2.4' # retrieve this value by: Gem.loaded_specs['szoo'].version.to_s
+  spec.name          = 'roll'
+  spec.version       = '1.2.4' # retrieve this value by: Gem.loaded_specs['roll'].version.to_s
   spec.authors       = ['Kenn Ejima', 'GWoo']
   spec.email         = ['kenn.ejima@gmail.com', 'gwoohoo@gmail.com']
-  spec.homepage      = 'http://github.com/gwoo/szoo'
+  spec.homepage      = 'http://github.com/gwoo/roll'
   spec.summary       = %q{A fork of sunzi}
   spec.description   = %q{Server provisioning utility for minimalists}
   spec.license       = 'MIT'

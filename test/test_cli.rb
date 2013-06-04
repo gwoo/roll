@@ -1,9 +1,9 @@
-require 'szoo'
+require 'roll'
 require 'test/unit'
 
 class TestCli < Test::Unit::TestCase
   def setup
-    @cli = SZoo::Cli.new
+    @cli = Roll::Cli.new
   end
 
   def test_parse_target
@@ -16,7 +16,7 @@ class TestCli < Test::Unit::TestCase
 
   def test_create
     @cli.create 'sandbox'
-    assert File.exist?('sandbox/szoo.yml')
+    assert File.exist?('sandbox/roll.yml')
     FileUtils.rm_rf 'sandbox'
   end
 end

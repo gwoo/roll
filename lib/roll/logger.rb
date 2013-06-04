@@ -1,4 +1,4 @@
-module SZoo
+module Roll
   module Logger
     class << self
       def info(text)

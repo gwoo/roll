@@ -1,9 +1,9 @@
-SZoo::Dependency.load('highline')
+Roll::Dependency.load('highline')
 
-module SZoo
+module Roll
   class Cloud
     class Base
-      include SZoo::Utility
+      include Roll::Utility
 
       def initialize(cli, provider)
         @provider = provider
@@ -19,7 +19,7 @@ module SZoo
         end
 
         @config = YAML.load(File.read("#{@provider}/#{@provider}.yml"))
-        @dns = SZoo::DNS.new(@config, @provider) if @config['dns']
+        @dns = Roll::DNS.new(@config, @provider) if @config['dns']
 
         if @config['fqdn']['zone'] == 'example.com'
           abort_with "You must have your own settings in #{@provider}.yml"
@@ -50,7 +50,7 @@ module SZoo
         end
 
         @config = YAML.load(File.read("#{@provider}/#{@provider}.yml"))
-        @dns = SZoo::DNS.new(@config, @provider) if @config['dns']
+        @dns = Roll::DNS.new(@config, @provider) if @config['dns']
 
         @instance = YAML.load(File.read("#{@provider}/instances/#{name}.yml"))
 

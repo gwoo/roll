@@ -1,6 +1,6 @@
-SZoo::Dependency.load('route53')
+Roll::Dependency.load('route53')
 
-module SZoo
+module Roll
   class DNS
     class Route53 < Base
       def initialize(config, cloud)
