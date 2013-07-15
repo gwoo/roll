@@ -133,12 +133,15 @@ For instance, if you have the following line in `roll.yml`,
 
 ```yaml
 scripts:
-  rvm: https://raw.github.com/kenn/roll-scripts/master/ruby/rvm.sh
+  rvm: https://raw.github.com/kenn/sunzi-scripts/master/ruby/rvm.sh
 ```
 
 `rvm.sh` will be available and you can refer to that recipe by `source scripts/rvm.sh`.
 
-You may find sample scripts in this repository useful: https://github.com/kenn/roll-scripts
+You may find sample scripts in these repositories useful:
+  - https://github.com/gwoo/roll-scripts
+  - https://github.com/kenn/sunzi-scripts
+
 
 Role-based configuration
 ------------------------
