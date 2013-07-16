@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |spec|
   spec.name          = 'roll'
-  spec.version       = '1.2.4' # retrieve this value by: Gem.loaded_specs['roll'].version.to_s
+  spec.version       = '1.3.0' # retrieve this value by: Gem.loaded_specs['roll'].version.to_s
   spec.authors       = ['Kenn Ejima', 'GWoo']
   spec.email         = ['kenn.ejima@gmail.com', 'gwoohoo@gmail.com']
   spec.homepage      = 'http://github.com/gwoo/roll'
-  spec.summary       = %q{A fork of sunzi}
+  spec.summary       = %q{A fork of sunzi, http://github.com/kenn/sunzi}
   spec.description   = %q{Server provisioning utility for minimalists}
   spec.license       = 'MIT'
 
