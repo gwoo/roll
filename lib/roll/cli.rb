@@ -65,8 +65,8 @@ module Roll
       def do_execute(target, script, force_sudo)
         get_config()
         sudo = 'sudo ' if force_sudo
-        hosts(target).each do |target|
-          user, host, port = parse_target(target)
+        hosts(target).each do |machine|
+          user, host, port = parse_target(machine)
           endpoint = "#{user}@#{host}"
 
           `ssh-keygen -R #{host} 2> /dev/null`
@@ -76,6 +76,7 @@ module Roll
           mkdir ~/roll &&
           cd ~/roll &&
           tar xz &&
+          echo "ROLL_NAME=\"#{target}\"\nROLL_HOST=\"#{host}\"\nROLL_USER=\"#{user}\"\n" >> config.sh &&
           #{sudo}bash #{script}
           EOS
 

@@ -49,6 +49,7 @@ Now, what it actually does is:
 1. Compile `roll.yml` to generate attributes and retrieve remote scripts, then copy files into the `compiled` directory
 1. SSH to `<host>` and login as `root`
 1. Transfer the content of the `compiled` directory to the remote server and extract in `$HOME/roll`
+1. Add `ROLL_NAME`, `ROLL_HOST`, `ROLL_USER` to config.sh
 1. Run `install.sh` on the remote server
 
 As you can see, all you need to do is edit `install.sh` and add some shell commands. That's it.
@@ -91,7 +92,10 @@ roll/
 How do you pass dynamic values?
 -------------------------------
 
-There are two ways to pass dynamic values to the script - ruby and bash.
+Roll adds `ROLL_NAME`, `ROLL_HOST`, `ROLL_USER` to config.sh at runtime,
+so you can access `$ROLL_NAME`, `$ROLL_HOST`, `$ROLL_USER` in your scripts
+
+Also, There are two ways to pass dynamic values to the script - ruby and bash.
 
 **For ruby (recommended)**: Make sure `eval_erb: true` is set in `roll.yml`. In the compile phase, attributes defined in `roll.yml` are accessible from any files in the form of `<%= @attributes.ruby_version %>`.
 
@@ -196,6 +200,7 @@ $ roll deploy <host>:2222
 What's new
 ----------
 
+* v1.4: Added `ROLL_NAME`, `ROLL_HOST`, `ROLL_USER` dynamic update.
 * v1.3: Added clusters to roll.yml
 * v1.2: Evaluate everything as ERB templates by default. Added "files" folder.
 * v1.1: "set -e" by default. apt-get everywhere in place of aptitude. Linode DNS support for DigitalOcean instances.
