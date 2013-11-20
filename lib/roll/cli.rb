@@ -12,15 +12,15 @@ module Roll
 
     desc 'deploy [--sudo] cluster|host|user@host:port [role]', 'Deploy roll project on the host(s)'
     method_options :sudo => false
-    def deploy(target = nil, role = nil)
+    def deploy(target, role = nil)
       do_deploy(target, role, options.sudo?)
     end
 
-    desc 'execute [--sudo] cluster|host|user@host:port script', 'Execute a script on the host(s).'
+    desc 'execute [--sudo] cluster|host|user@host:port script [<args>]', 'Execute a script on the host(s).'
     method_options :sudo => false
-    def execute(target = nil, script)
+    def execute(target, script, *args)
       script = "scripts/#{script}"
-      do_execute(target, script, options.sudo?)
+      do_execute(target, script, options.sudo?, args)
     end
 
     desc 'compile', 'Compile roll project'
@@ -62,29 +62,34 @@ module Roll
         copy_file 'templates/create/files/.gitkeep',     "#{project}/files/.gitkeep"
       end
 
-      def do_execute(target, script, force_sudo)
+      def do_execute(target, script, force_sudo, args=nil)
         get_config()
         sudo = 'sudo ' if force_sudo
-        hosts(target).each do |machine|
+        hosts(target).each do |name, machine|
           user, host, port = parse_target(machine)
+
+          if target == machine
+            name = host
+          end
+
           endpoint = "#{user}@#{host}"
 
-          `ssh-keygen -R #{host} 2> /dev/null`
+          `ssh-keygen -q -R #{host} 2> /dev/null`
 
           remote_commands = <<-EOS
           rm -rf ~/roll &&
           mkdir ~/roll &&
           cd ~/roll &&
-          tar xz &&
-          echo "ROLL_NAME=\"#{target}\"\nROLL_HOST=\"#{host}\"\nROLL_USER=\"#{user}\"\n" >> config.sh &&
-          #{sudo}bash #{script}
+          tar xmz &&
+          echo "ROLL_NAME=\"#{name}\"\nROLL_HOST=\"#{host}\"\nROLL_USER=\"#{user}\"\n" >> config.sh &&
+          #{sudo}ROLL_NAME="#{name}" ROLL_HOST="#{host}" ROLL_USER="#{user}" bash #{script} #{args}
           EOS
 
           remote_commands.strip! << ' && rm -rf ~/roll' if @config['preferences'] and @config['preferences']['erase_remote_folder']
 
           local_commands = <<-EOS
           cd compiled
-          tar cz . | ssh -o 'StrictHostKeyChecking no' #{endpoint} -p #{port} '#{remote_commands}'
+          tar cz . | ssh -q -o 'StrictHostKeyChecking no' #{endpoint} -p #{port} '#{remote_commands}'
           EOS
 
           Open3.popen3(local_commands) do |stdin, stdout, stderr|
@@ -160,7 +165,7 @@ module Roll
       def hosts(input)
         hosts = nil
         if !@config || !@config.has_key?('clusters') then
-          return [input]
+          return {input => input}
         end
         @config['clusters'].each {|key,value|
           if key == input then
@@ -170,13 +175,13 @@ module Roll
           if value.is_a? Hash
             value.each {|key, value|
               if key == input then
-                hosts={key:value}
+                hosts={key => value}
                 break
               end
             }
           end
         }
-        return hosts == nil ? [input] : hosts.values
+        return hosts == nil ? {input => input} : hosts
       end
 
       def parse_target(target)
