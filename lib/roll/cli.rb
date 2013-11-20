@@ -62,7 +62,7 @@ module Roll
         copy_file 'templates/create/files/.gitkeep',     "#{project}/files/.gitkeep"
       end
 
-      def do_execute(target, script, force_sudo, args=nil)
+      def do_execute(target, script, force_sudo, args=[])
         get_config()
         sudo = 'sudo ' if force_sudo
         hosts(target).each do |name, machine|
@@ -82,7 +82,7 @@ module Roll
           cd ~/roll &&
           tar xmz &&
           echo "ROLL_NAME=\"#{name}\"\nROLL_HOST=\"#{host}\"\nROLL_USER=\"#{user}\"\n" >> config.sh &&
-          #{sudo}ROLL_NAME="#{name}" ROLL_HOST="#{host}" ROLL_USER="#{user}" bash #{script} #{args}
+          #{sudo}ROLL_NAME="#{name}" ROLL_HOST="#{host}" ROLL_USER="#{user}" bash #{script} #{args.join(" ")}
           EOS
 
           remote_commands.strip! << ' && rm -rf ~/roll' if @config['preferences'] and @config['preferences']['erase_remote_folder']
@@ -169,7 +169,11 @@ module Roll
         end
         @config['clusters'].each {|key,value|
           if key == input then
-            hosts=value
+            if value.is_a? Hash
+              hosts=value
+            else
+              hosts={key => value}
+            end
             break
           end
           if value.is_a? Hash
