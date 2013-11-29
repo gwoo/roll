@@ -81,7 +81,7 @@ module Roll
           mkdir ~/roll &&
           cd ~/roll &&
           tar xmz &&
-          echo "ROLL_NAME=\"#{name}\"\nROLL_HOST=\"#{host}\"\nROLL_USER=\"#{user}\"\n" >> config.sh &&
+          echo "\n\nROLL_NAME=\"#{name}\"\nROLL_HOST=\"#{host}\"\nROLL_USER=\"#{user}\"\n" >> config.sh &&
           #{sudo}ROLL_NAME="#{name}" ROLL_HOST="#{host}" ROLL_USER="#{user}" bash #{script} #{args.join(" ")}
           EOS
 

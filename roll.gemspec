@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name          = 'roll'
-  spec.version       = '1.4.2' # retrieve this value by: Gem.loaded_specs['roll'].version.to_s
+  spec.version       = '1.4.3' # retrieve this value by: Gem.loaded_specs['roll'].version.to_s
   spec.authors       = ['Kenn Ejima', 'GWoo']
   spec.email         = ['kenn.ejima@gmail.com', 'gwoohoo@gmail.com']
   spec.homepage      = 'http://github.com/gwoo/roll'
